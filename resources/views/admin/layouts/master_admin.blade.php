@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>@yield('title','Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro')</title>
+    <title>@yield('title', 'Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro')</title>
 
     <meta name="description" content="" />
 
@@ -53,9 +53,10 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('template/sneat-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
-    <link rel="stylesheet" href="{{ asset('template/sneat-admin/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('template/sneat-admin/assets/vendor/libs/apex-charts/apex-charts.css') }}" /> --}}
 
     <!-- Page CSS -->
+
 
     <!-- Helpers -->
     <script src="{{ asset('template/sneat-admin/assets/vendor/js/helpers.js') }}"></script>
@@ -63,6 +64,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('template/sneat-admin/assets/js/config.js') }}"></script>
+  @yield('css')
   </head>
 
   <body>
@@ -159,7 +161,12 @@
                   <div data-i18n="Blank">Category</div>
                 </a>
               </li>
-
+              <li class="menu-item ">
+                <a href="{{ route('admin.post.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+                  <div data-i18n="Blank">Post</div>
+                </a>
+              </li>
 
 
 
@@ -514,15 +521,15 @@
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
                 <li class="nav-item lh-1 me-3">
-                  <a
-                    class="github-button"
-                    href="https://github.com/themeselection/sneat-html-admin-template-free"
-                    data-icon="octicon-star"
-                    data-size="large"
-                    data-show-count="true"
-                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                    >Star</a
-                  >
+@auth
+            {{ Auth::user()->name }}
+            {{ auth()->user()->name }}
+
+
+@endauth
+@if (auth()->check())
+{{ auth()->user()->name }}
+@endif
                 </li>
 
                 <!-- User -->
@@ -576,7 +583,7 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="/logout">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -616,14 +623,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
-      <a
-        href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-        target="_blank"
-        class="btn btn-danger btn-buy-now"
-        >Upgrade to Pro</a
-      >
-    </div>
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -642,9 +642,11 @@
     <script src="{{ asset('template/sneat-admin/assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
-    <script src="{{ asset('template/sneat-admin/assets/js/dashboards-analytics.js') }}"></script>
+    {{-- <script src="{{ asset('template/sneat-admin/assets/js/dashboards-analytics.js') }}"></script> --}}
 
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js') }}"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    @yield('js')
   </body>
 </html>

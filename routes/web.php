@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,22 +21,32 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('admin')->group(function () {
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('do.login');
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+});
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin');
     Route::get('/blank', [AdminDashboardController::class, 'blank'])->name('admin.blank');
     Route::get('post', [AdminPostController::class, 'index'])->name('admin.post.index');
     Route::get('post/create', [AdminPostController::class, 'create'])->name('admin.post.create');
     Route::post('post', [AdminPostController::class, 'store'])->name('admin.post.store');
     Route::get('post/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.post.edit');
-    Route::put('post/{id}', [AdminPostController::class, 'update'])->name('admin.post.update');
+    Route::put('post/update/{id}', [AdminPostController::class, 'update'])->name('admin.post.update');
     Route::delete('post/{id}', [AdminPostController::class, 'destroy'])->name('admin.post.destroy');
 
     Route::get('category', [AdminCategoryController::class, 'index'])->name('admin.category.index');
     Route::get('category/create', [AdminCategoryController::class, 'create'])->name('admin.category.create');
     Route::post('category', [AdminCategoryController::class, 'store'])->name('admin.category.store');
     Route::get('category/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.category.edit');
-    Route::put('category/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
-    Route::delete('category/{id}', [AdminCategoryController::class, 'destroy'])->name('admin.category.destroy');
+    Route::put('category/update/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
+    Route::get('category/delete/{id}', [AdminCategoryController::class, 'destroy'])->name('admin.category.delete');
 
     Route::get('banner', [AdminAdminBannerController::class, 'index'])->name('admin.banner.index');
     Route::get('banner/create', [AdminBannerController::class, 'create'])->name('admin.banner.create');
